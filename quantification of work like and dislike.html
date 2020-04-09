@@ -13266,12 +13266,30 @@ div#notebook {
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Classify by morning or evening</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;full_date&quot;</span><span class="p">][</span><span class="mi">20</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">morning_or_night</span><span class="p">(</span><span class="n">time_str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Lazy classification of time strings by morning or night, if len == 4 then string is before 10am, if len == 5 then its post 10am&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">time_str</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;morning&#39;</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">time_str</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;evening&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;fail&#39;</span>
+
+<span class="c1">#doesn&#39;t fail for any point</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">morning_or_night</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;fail&#39;</span><span class="p">]</span>
 </pre></div>
 
     </div>
@@ -13290,7 +13308,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Timestamp(&#39;2020-03-30 00:00:00&#39;)</pre>
+<pre>Series([], Name: time, dtype: object)</pre>
 </div>
 
 </div>
@@ -13301,7 +13319,241 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;morn_or_night&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">morning_or_night</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">work_status</span><span class="p">(</span><span class="n">activity_str</span><span class="p">):</span>
+    <span class="n">activity_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">activity_str</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;dislike work&quot;</span> <span class="ow">in</span> <span class="n">activity_str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;dislike work&#39;</span>
+    <span class="k">elif</span> <span class="s2">&quot;neutral work&quot;</span> <span class="ow">in</span> <span class="n">activity_str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;neutral work&#39;</span>
+    <span class="k">elif</span> <span class="s1">&#39;like work&#39;</span> <span class="ow">in</span> <span class="n">activity_str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;like work&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;not reported&#39;</span>
+    
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;work_status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;activities&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">work_status</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[6]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>full_date</th>
+      <th>date</th>
+      <th>weekday</th>
+      <th>time</th>
+      <th>mood</th>
+      <th>activities</th>
+      <th>note</th>
+      <th>morn_or_night</th>
+      <th>work_status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2020-04-09</td>
+      <td>9-Apr</td>
+      <td>Thursday</td>
+      <td>7:54</td>
+      <td>meh</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>morning</td>
+      <td>not reported</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2020-04-08</td>
+      <td>8-Apr</td>
+      <td>Wednesday</td>
+      <td>21:04</td>
+      <td>meh</td>
+      <td>dislike work</td>
+      <td>NaN</td>
+      <td>evening</td>
+      <td>dislike work</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2020-04-08</td>
+      <td>8-Apr</td>
+      <td>Wednesday</td>
+      <td>7:19</td>
+      <td>good</td>
+      <td>neutral work</td>
+      <td>NaN</td>
+      <td>morning</td>
+      <td>neutral work</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2020-04-07</td>
+      <td>7-Apr</td>
+      <td>Tuesday</td>
+      <td>21:25</td>
+      <td>meh</td>
+      <td>dislike work</td>
+      <td>NaN</td>
+      <td>evening</td>
+      <td>dislike work</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2020-04-07</td>
+      <td>7-Apr</td>
+      <td>Tuesday</td>
+      <td>7:09</td>
+      <td>good</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>morning</td>
+      <td>not reported</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>564</th>
+      <td>2019-01-06</td>
+      <td>6-Jan</td>
+      <td>Sunday</td>
+      <td>22:45</td>
+      <td>good</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>evening</td>
+      <td>not reported</td>
+    </tr>
+    <tr>
+      <th>565</th>
+      <td>2019-01-06</td>
+      <td>6-Jan</td>
+      <td>Sunday</td>
+      <td>11:11</td>
+      <td>good</td>
+      <td>shopping</td>
+      <td>NaN</td>
+      <td>evening</td>
+      <td>not reported</td>
+    </tr>
+    <tr>
+      <th>566</th>
+      <td>2019-01-05</td>
+      <td>5-Jan</td>
+      <td>Saturday</td>
+      <td>11:57</td>
+      <td>good</td>
+      <td>good meal</td>
+      <td>NaN</td>
+      <td>evening</td>
+      <td>not reported</td>
+    </tr>
+    <tr>
+      <th>567</th>
+      <td>2019-01-04</td>
+      <td>4-Jan</td>
+      <td>Friday</td>
+      <td>23:31</td>
+      <td>good</td>
+      <td>sleeping</td>
+      <td>NaN</td>
+      <td>evening</td>
+      <td>not reported</td>
+    </tr>
+    <tr>
+      <th>568</th>
+      <td>2019-01-04</td>
+      <td>4-Jan</td>
+      <td>Friday</td>
+      <td>10:42</td>
+      <td>good</td>
+      <td>travel</td>
+      <td>NaN</td>
+      <td>evening</td>
+      <td>not reported</td>
+    </tr>
+  </tbody>
+</table>
+<p>569 rows × 9 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">freq_table</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;like work&#39;</span><span class="p">:</span> <span class="n">Counter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;activities&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;dislike work&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">==</span> <span class="kc">False</span><span class="p">][</span><span class="s2">&quot;activities&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;like work&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)))[</span><span class="kc">True</span><span class="p">],</span>
@@ -13343,7 +13595,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[99]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfRelevantToWorkStatus</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">152</span><span class="p">]</span>
@@ -13378,7 +13630,7 @@ Work status was recorded: 129
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[104]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">dfRelevantToWorkStatus</span><span class="p">)</span>
@@ -13394,7 +13646,7 @@ Work status was recorded: 129
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[104]:</div>
+    <div class="prompt output_prompt">Out[9]:</div>
 
 
 
@@ -13411,7 +13663,7 @@ Work status was recorded: 129
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[103]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">Counter</span><span class="p">(</span><span class="n">dfRelevantToWorkStatus</span><span class="p">[</span><span class="s1">&#39;full_date&#39;</span><span class="p">]))</span>
@@ -13427,7 +13679,7 @@ Work status was recorded: 129
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[103]:</div>
+    <div class="prompt output_prompt">Out[10]:</div>
 
 
 
@@ -13444,7 +13696,7 @@ Work status was recorded: 129
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[71]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">total</span> <span class="o">=</span> <span class="mi">12</span><span class="o">+</span><span class="mi">87</span><span class="o">+</span><span class="mi">30</span>
@@ -13481,7 +13733,7 @@ dislike work: 30 (0.23)
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[105]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="mi">12</span><span class="o">+</span><span class="mi">87</span><span class="o">+</span><span class="mi">30</span>
@@ -13497,7 +13749,7 @@ dislike work: 30 (0.23)
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[105]:</div>
+    <div class="prompt output_prompt">Out[12]:</div>
 
 
 
@@ -13514,7 +13766,7 @@ dislike work: 30 (0.23)
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[107]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="mi">23</span><span class="o">+</span><span class="mi">129</span>
@@ -13530,7 +13782,7 @@ dislike work: 30 (0.23)
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[107]:</div>
+    <div class="prompt output_prompt">Out[13]:</div>
 
 
 
@@ -13547,7 +13799,7 @@ dislike work: 30 (0.23)
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[83]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
@@ -13587,6 +13839,126 @@ dislike work: 30 (0.23)
 
 </div>
 
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">morning_work</span> <span class="o">=</span> <span class="n">dfRelevantToWorkStatus</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">dfRelevantToWorkStatus</span><span class="p">[</span><span class="s1">&#39;morn_or_night&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;morning&#39;</span><span class="p">]</span>
+<span class="n">evening_work</span> <span class="o">=</span> <span class="n">dfRelevantToWorkStatus</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">dfRelevantToWorkStatus</span><span class="p">[</span><span class="s1">&#39;morn_or_night&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;evening&#39;</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mornVSevening_twoway</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">dfRelevantToWorkStatus</span><span class="p">[</span><span class="s1">&#39;morn_or_night&#39;</span><span class="p">],</span> <span class="n">dfRelevantToWorkStatus</span><span class="p">[</span><span class="s1">&#39;work_status&#39;</span><span class="p">],</span> <span class="n">margins</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">mornVSevening_twoway</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[29]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>work_status</th>
+      <th>dislike work</th>
+      <th>like work</th>
+      <th>neutral work</th>
+      <th>not reported</th>
+      <th>All</th>
+    </tr>
+    <tr>
+      <th>morn_or_night</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>evening</th>
+      <td>16</td>
+      <td>7</td>
+      <td>45</td>
+      <td>9</td>
+      <td>77</td>
+    </tr>
+    <tr>
+      <th>morning</th>
+      <td>14</td>
+      <td>5</td>
+      <td>42</td>
+      <td>14</td>
+      <td>75</td>
+    </tr>
+    <tr>
+      <th>All</th>
+      <td>30</td>
+      <td>12</td>
+      <td>87</td>
+      <td>23</td>
+      <td>152</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
 </div>
 </div>
 
